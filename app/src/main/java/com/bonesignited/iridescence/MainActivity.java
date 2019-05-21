@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements LoadListener {
         setContentView(R.layout.activity_main);
         loadTask = new LoadTask();
         loadTask.setLoadListener(this);
-        loadTask.execute();
+        loadTask.execute(mPictureList);
         recyclerView = findViewById(R.id.recycler_view);
         LinearLayoutManager manager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(manager);
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements LoadListener {
     }
 
 
-    class LoadTask extends AsyncTask<Void, Integer, Boolean> {
+    static class LoadTask extends AsyncTask<List<Picture>, Integer, Boolean> {
 
         private LoadListener loadListener;
 
@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements LoadListener {
         }
 
         @Override
-        protected Boolean doInBackground(Void... voids) {
+        protected Boolean doInBackground(List<Picture>... lists) {
 //            String interfaceUrl = "https://bing.biturl.top/?resolution=1920&format=json&index=1&mkt=zh-CN";
             OkHttpClient client = new OkHttpClient();
             Gson gson = new Gson();
@@ -73,22 +73,26 @@ public class MainActivity extends AppCompatActivity implements LoadListener {
                 try {
                     Response response = call.execute();
                     Picture picture = gson.fromJson(response.body().string(), Picture.class);
-                    mPictureList.add(picture);
+                    lists[0].add(picture);
                     Log.d("MainActivity", "onResponse: 获得数据");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-            return null;
+
+            if (lists[0].size() > 0) {
+                return true;
+            }
+            return false;
         }
 
 
         @Override
         protected void onPostExecute(Boolean aBoolean) {
-            if (mPictureList.size() > 0) {
-                Toast.makeText(MainActivity.this, "已加载到 mPictureList 中", Toast.LENGTH_LONG).show();
+            if (aBoolean) {
+                Toast.makeText(MyApplication.getContext(), "已加载到 mPictureList 中", Toast.LENGTH_LONG).show();
             } else {
-                Toast.makeText(MainActivity.this, "加载失败", Toast.LENGTH_LONG).show();
+                Toast.makeText(MyApplication.getContext(), "加载失败", Toast.LENGTH_LONG).show();
             }
             loadListener.onReceiveMsg("c");
         }

@@ -53,7 +53,6 @@ public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.ViewHold
         String url = pictureList.get(i).getUrl();
         String copyright = pictureList.get(i).getCopyright();
         Glide.with(context).load(url).into(viewHolder.image);
-        Log.i(TAG, "onBindViewHolder: 加载图片");
 
         viewHolder.description.setText(copyright);
     }
