@@ -1,26 +1,59 @@
 package com.bonesignited.iridescence;
 
-import com.google.gson.annotations.SerializedName;
+
+import com.alibaba.fastjson.annotation.JSONField;
 
 public class Picture {
-    @SerializedName("start_date")
+
+    @JSONField(name = "startdate")
     private String startDate;
 
-    @SerializedName("end_date")
+    @JSONField(name = "fullstartdate")
+    private String fullStartDate;
+
+    @JSONField(name = "enddate")
     private String endDate;
 
+    @JSONField(name = "url")
     private String url;
 
+    @JSONField(serialize = false)
+    private String urlBase;
+
+    @JSONField(name = "copyright")
     private String copyright;
 
-    @SerializedName("copyright_link")
+    @JSONField(name = "copyrightlink")
     private String copyrightLink;
 
-    public Picture() {
-    }
+    @JSONField(serialize = false)
+    private String title;
 
-    public Picture(String startDate, String endDate, String url, String copyright, String copyrightLink) {
+    @JSONField(serialize = false)
+    private String quiz;
+
+    @JSONField(serialize = false)
+    private boolean wp;
+
+    @JSONField(serialize = false)
+    private String hsh;
+
+    @JSONField(serialize = false)
+    private int drk;
+
+    @JSONField(serialize = false)
+    private int top;
+
+    @JSONField(serialize = false)
+    private int bot;
+
+    @JSONField(serialize = false)
+    private int[] hs;
+
+
+    public Picture(String startDate, String fullStartDate, String endDate, String url, String copyright, String copyrightLink) {
         this.startDate = startDate;
+        this.fullStartDate = fullStartDate;
         this.endDate = endDate;
         this.url = url;
         this.copyright = copyright;
@@ -33,6 +66,14 @@ public class Picture {
 
     public void setStartDate(String startDate) {
         this.startDate = startDate;
+    }
+
+    public String getFullStartDate() {
+        return fullStartDate;
+    }
+
+    public void setFullStartDate(String fullStartDate) {
+        this.fullStartDate = fullStartDate;
     }
 
     public String getEndDate() {
@@ -66,4 +107,5 @@ public class Picture {
     public void setCopyrightLink(String copyrightLink) {
         this.copyrightLink = copyrightLink;
     }
+
 }
